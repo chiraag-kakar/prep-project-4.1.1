@@ -6,7 +6,7 @@ import logo from "./mlh-prep.png";
 function App() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [city, setCity] = useState("New York City");
+  const [city, setCity] = useState("New Delhi");
   const [results, setResults] = useState(null);
 
   const [coordinates, setCoordinates] = useState(null);
@@ -45,12 +45,12 @@ function App() {
           coordinates.lat +
           "&lon=" +
           coordinates.lon +
-          "&exclude=minutely,current,daily&appid=30b7dfcb3194c180dc62dd9b21e0c132"
+          "&exclude=minutely,daily&units=metric&appid=30b7dfcb3194c180dc62dd9b21e0c132"
       )
         .then((res) => res.json())
         .then(
           (result) => {
-            setOnecallResults(result);
+            setOnecallResults(result.hourly);            
             setIsOnecallLoaded(true);
           },
           (error) => {
@@ -103,8 +103,8 @@ function App() {
               <>
                 <div className="container">
                   <div className="row">
-                    {onecallResults.hourly.map((object, i) => (
-                      <div className="card" id={i}>
+                    {onecallResults.map((object, i) => (
+                      <div className="card" key={i}>
                         <img
                           src={
                             "https://openweathermap.org/img/wn/" +
@@ -116,7 +116,7 @@ function App() {
 
                         <h3>{object.weather[0].main}</h3>
                         <p>Feels like {object.feels_like}°C</p>
-                        <p>At {Date(object.dt)}</p>
+                        <p>At {object.dt}</p>
                       </div>
                     ))}
                   </div>
